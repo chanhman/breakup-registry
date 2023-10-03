@@ -10,26 +10,42 @@ import Input from '@/app/components/Input';
 import { Item } from './types';
 
 type Props = {
+  data: Item;
+  handleEditToggle: () => void;
+  id: number;
   setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
-export default function ItemForm({ setItems }: Props) {
+export default function EditItemForm({
+  data,
+  handleEditToggle,
+  id,
+  setItems,
+}: Props) {
+  const prevData = data;
   const [formData, setFormData] = useState({
-    id: 0,
-    name: '',
-    price: 0,
-    link: '',
+    id: data.id,
+    name: data.name,
+    price: data.price,
+    link: data.link,
   });
+
+  function handleCancel() {
+    setFormData(prevData);
+  }
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setItems((prev) => [...prev, formData]);
-    setFormData({
-      id: 0,
-      name: '',
-      price: 0,
-      link: '',
-    });
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          return formData;
+        }
+
+        return item;
+      })
+    );
+    handleEditToggle();
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
@@ -70,12 +86,18 @@ export default function ItemForm({ setItems }: Props) {
           value={formData.link}
         />
       </div>
-      <div>
+      <div className="flex gap-4">
+        <button
+          className="pointer-events-auto ml-4 flex-none px-2 py-[0.3125rem] font-medium text-slate-700 ring-1 ring-slate-700/10 hover:bg-slate-50"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
         <button
           className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
           type="submit"
         >
-          Add item
+          Save changes
         </button>
       </div>
     </form>

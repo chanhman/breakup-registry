@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
+import EditItemForm from './EditItemForm';
 import { Item } from './types';
 
 type Props = {
@@ -41,7 +42,14 @@ export default function ItemRow({ data, setItems }: Props) {
           </button>
         </div>
       </div>
-      {toggleEdit && <div>Edit form</div>}
+      {toggleEdit && (
+        <EditItemForm
+          data={data}
+          handleEditToggle={handleEditToggle}
+          id={data.id}
+          setItems={setItems}
+        />
+      )}
     </div>
   );
 }

@@ -15,22 +15,12 @@ const data = [
 
 export default function Page() {
   const [items, setItems] = useState(data);
-  const [formData, setFormData] = useState({
-    id: 0,
-    name: '',
-    price: 0,
-    link: '',
-  });
 
   return (
     <div className="py-10 px-8">
       <h1 className="text-2xl text-slate-900 sm:text-4xl">Mary's Registry</h1>
 
-      <ItemForm
-        formData={formData}
-        setItems={setItems}
-        setFormData={setFormData}
-      />
+      <ItemForm setItems={setItems} />
 
       <div className="">
         {items.map((item) => (
