@@ -39,7 +39,7 @@ export default function EditItemForm({
     setItems((prev) =>
       prev.map((item) => {
         if (item.id === id) {
-          return formData;
+          return { ...item, ...formData };
         }
 
         return item;
@@ -92,6 +92,7 @@ export default function EditItemForm({
         <button
           className="pointer-events-auto ml-4 flex-none px-2 py-[0.3125rem] font-medium text-slate-700 ring-1 ring-slate-700/10 hover:bg-slate-50"
           onClick={handleCancel}
+          type="button"
         >
           Cancel
         </button>

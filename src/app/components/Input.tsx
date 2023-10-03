@@ -5,7 +5,7 @@ type Props = {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
   value: string | number;
-  required: boolean;
+  required?: boolean;
 };
 
 export default function Input({
