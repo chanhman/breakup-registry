@@ -1,3 +1,5 @@
+import Label from '@/app/components/Label';
+import Input from '@/app/components/Input';
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 
 type Item = {
@@ -33,57 +35,34 @@ export default function ItemForm({ formData, setItems, setFormData }: Props) {
       [e.target.name]: e.target.value,
     }));
   }
+
   return (
     <form
       className="flex items-end gap-4 py-5"
       onSubmit={(e) => handleOnSubmit(e)}
     >
       <div className="flex-1 grid gap-2">
-        <label
-          className="block text-sm font-semibold leading-6 text-slate-900"
-          htmlFor="name"
-        >
-          Name
-        </label>
-        <input
-          className="block w-full border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+        <Label text="Name" htmlFor="name" />
+        <Input
+          id="name"
           onChange={(e) => handleInputChange(e)}
           value={formData.name}
-          type="text"
-          name="name"
-          id="name"
         />
       </div>
       <div className="flex-1 grid gap-2">
-        <label
-          className="block text-sm font-semibold leading-6 text-slate-900"
-          htmlFor="price"
-        >
-          Price
-        </label>
-        <input
-          className="block w-full border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+        <Label text="Price" htmlFor="price" />
+        <Input
+          id="price"
           onChange={(e) => handleInputChange(e)}
           value={formData.price}
-          type="number"
-          name="price"
-          id="price"
         />
       </div>
       <div className="flex-1 grid gap-2">
-        <label
-          className="block text-sm font-semibold leading-6 text-slate-900"
-          htmlFor="link"
-        >
-          Link
-        </label>
-        <input
-          className="block w-full border-0 p-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+        <Label text="Link" htmlFor="link" />
+        <Input
+          id="link"
           onChange={(e) => handleInputChange(e)}
           value={formData.link}
-          type="text"
-          name="link"
-          id="link"
         />
       </div>
       <div>
