@@ -13,7 +13,7 @@ type Props = {
   setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
-export default function ItemForm({ setItems }: Props) {
+export default function AddItemForm({ setItems }: Props) {
   const [formData, setFormData] = useState({
     id: 0,
     name: '',
@@ -37,7 +37,8 @@ export default function ItemForm({ setItems }: Props) {
     setFormData((prev) => ({
       ...prev,
       id: Math.random(),
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.name === 'price' ? parseFloat(e.target.value) : e.target.value,
     }));
   }
 
@@ -52,6 +53,7 @@ export default function ItemForm({ setItems }: Props) {
           id="name"
           onChange={(e) => handleInputChange(e)}
           value={formData.name}
+          required
         />
       </div>
       <div className="flex-1 grid gap-2">
@@ -60,6 +62,8 @@ export default function ItemForm({ setItems }: Props) {
           id="price"
           onChange={(e) => handleInputChange(e)}
           value={formData.price}
+          type="number"
+          required
         />
       </div>
       <div className="flex-1 grid gap-2">
@@ -68,6 +72,7 @@ export default function ItemForm({ setItems }: Props) {
           id="link"
           onChange={(e) => handleInputChange(e)}
           value={formData.link}
+          required
         />
       </div>
       <div>

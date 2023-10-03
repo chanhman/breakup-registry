@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import ItemForm from './components/ItemForm';
+import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 
 const data = [
@@ -20,7 +20,7 @@ export default function Page() {
     <div className="py-10 px-8">
       <h1 className="text-2xl text-slate-900 sm:text-4xl">Mary's Registry</h1>
 
-      <ItemForm setItems={setItems} />
+      <AddItemForm setItems={setItems} />
 
       <div className="">
         {items.map((item) => (

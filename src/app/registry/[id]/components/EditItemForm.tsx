@@ -53,7 +53,8 @@ export default function EditItemForm({
     setFormData((prev) => ({
       ...prev,
       id: Math.random(),
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.name === 'price' ? parseFloat(e.target.value) : e.target.value,
     }));
   }
 
@@ -76,6 +77,7 @@ export default function EditItemForm({
           id="price"
           onChange={(e) => handleInputChange(e)}
           value={formData.price}
+          type="number"
         />
       </div>
       <div className="flex-1 grid gap-2">
