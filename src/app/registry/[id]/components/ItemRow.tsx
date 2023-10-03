@@ -21,7 +21,12 @@ export default function ItemRow({ data, setItems }: Props) {
   return (
     <div className="py-5 border-slate-200 border-b">
       <div className="flex items-center justify-between ">
-        <div className="text-lg">
+        <div className="flex gap-2 items-center text-lg">
+          {data.purchased_status && (
+            <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+              Purchased
+            </span>
+          )}
           <a className="text-slate-600 hover:underline" href={data.link}>
             {data.name}
           </a>{' '}

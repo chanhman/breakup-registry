@@ -3,4 +3,5 @@ export type Item = {
   name: string;
   price: number;
   link: string;
+  purchased_status: boolean;
 };
