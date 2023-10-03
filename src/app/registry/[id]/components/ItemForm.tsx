@@ -1,13 +1,7 @@
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
-
-type Item = {
-  id: number;
-  name: string;
-  price: number;
-  link: string;
-};
+import { Item } from './types';
 
 type Props = {
   formData: Item;
