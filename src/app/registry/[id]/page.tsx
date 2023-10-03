@@ -1,14 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 import { data } from './data';
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const isAdmin = searchParams.get('admin');
   const [items, setItems] = useState(data);
 
-  return (
+  return isAdmin ? (
     <div className="py-10 px-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl text-slate-900 sm:text-4xl">Mary's Registry</h1>
@@ -23,6 +26,13 @@ export default function Page() {
           <ItemRow data={item} setItems={setItems} key={item.id} />
         ))}
       </div>
+    </div>
+  ) : (
+    <div className="py-10 px-8">
+      <div>
+        <h1 className="text-2xl text-slate-900 sm:text-4xl">Mary's Registry</h1>
+      </div>
+      <div className="my-8">Non-admin</div>
     </div>
   );
 }
