@@ -40,6 +40,10 @@ export default function Page() {
     }));
   }
 
+  function handleDelete(id: number) {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  }
+
   return (
     <div className="py-10 px-8">
       <h1 className="text-2xl text-slate-900 sm:text-4xl">Mary's Registry</h1>
@@ -122,7 +126,10 @@ export default function Page() {
               <button className="pointer-events-auto ml-4 flex-none px-2 py-[0.3125rem] font-medium text-slate-700 ring-1 ring-slate-700/10 hover:bg-slate-50">
                 Edit
               </button>
-              <button className="flex justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-red-500 hover:text-white hover:bg-red-500 ring-1 ring-red-500">
+              <button
+                className="flex justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-red-500 hover:text-white hover:bg-red-500 ring-1 ring-red-500"
+                onClick={() => handleDelete(item.id)}
+              >
                 Delete
               </button>
             </div>
