@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
-import { Database } from '../../../../types/supabase';
+import { Database } from '@/lib/types/supabase';
 
 type Item = Database['public']['Tables']['items']['Row'];
 

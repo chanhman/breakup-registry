@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import EditItemForm from './EditItemForm';
-import { Database } from '../../../../../types/supabase';
+import { Database } from '@/lib/types/supabase';
 type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
