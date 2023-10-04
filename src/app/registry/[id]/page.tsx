@@ -1,16 +1,23 @@
 'use client';
-
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
-import Filters from './components/Filters';
+// import Filters from './components/Filters';
 import { data } from './data';
 
 export default function Page() {
   const searchParams = useSearchParams();
   const isAdmin = !!searchParams.get('admin');
   const [items, setItems] = useState(data);
+  // const supabase = createClientComponentClient();
+  // const getUser = async () => {
+  //   const {
+  //     data: { user },
+  //   } = await supabase.auth.getUser();
+  // };
+  // getUser();
 
   return (
     <div className="py-10 px-8">
