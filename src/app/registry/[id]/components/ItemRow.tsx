@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import EditItemForm from './EditItemForm';
 import { Database } from '@/lib/types/supabase';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
@@ -10,13 +11,21 @@ type Props = {
 };
 
 export default function ItemRow({ data, isAdmin, setItems }: Props) {
+  const supabase = createClientComponentClient();
+
   const [toggleEdit, setToggleEdit] = useState(false);
   const purchased = data.purchased_status;
 
-  function handleDelete(id: number) {
-    setItems((prev) => {
-      return prev.filter((item) => item.id !== id);
-    });
+  async function handleDelete(id: number) {
+    const { error } = await supabase.from('items').delete().eq('id', id);
+
+    if (error) {
+      console.log('Yo, dawg, there was an error');
+    }
+
+    if (!error) {
+      console.log('Dat shit gone');
+    }
   }
 
   function handleEditToggle() {
