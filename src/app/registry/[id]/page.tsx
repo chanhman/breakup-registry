@@ -1,5 +1,8 @@
 'use client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import {
+  User,
+  createClientComponentClient,
+} from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
@@ -10,27 +13,31 @@ import { Database } from '@/lib/types/supabase';
 type Item = Database['public']['Tables']['items']['Row'];
 
 export default function Page() {
+  const supabase = createClientComponentClient();
+
   const searchParams = useSearchParams();
   const isAdmin = !!searchParams.get('admin');
+
   const [items, setItems] = useState<Item[]>([]);
-  const supabase = createClientComponentClient();
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    console.log(user);
-  };
-  getUser();
-  const getData = async () => {
-    const { data } = await supabase.from('items').select();
-    if (data) setItems(data);
-  };
+  const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
-    getData();
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUserData(user);
+    };
+    getUser();
   }, []);
 
-  console.log(items);
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await supabase.from('items').select();
+      if (data) setItems(data);
+    };
+    getData();
+  }, []);
 
   return (
     <div className="py-10 px-8">
