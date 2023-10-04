@@ -11,54 +11,51 @@ export interface Database {
     Tables: {
       categories: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: number
-          title: string | null
+          title: string
+          value: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: number
-          title?: string | null
+          title: string
+          value: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: number
-          title?: string | null
+          title?: string
+          value?: string
         }
         Relationships: []
       }
       gift_tracker: {
         Row: {
-          created_at: string | null
-          email: string | null
-          first_name: string | null
+          created_at: string
+          email: string
+          first_name: string
           id: number
-          item_id: number | null
-          last_last: string | null
+          item_id: number
+          last_last: string
         }
         Insert: {
-          created_at?: string | null
-          email?: string | null
-          first_name?: string | null
+          created_at?: string
+          email: string
+          first_name: string
           id?: number
-          item_id?: number | null
-          last_last?: string | null
+          item_id: number
+          last_last: string
         }
         Update: {
-          created_at?: string | null
-          email?: string | null
-          first_name?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
           id?: number
-          item_id?: number | null
-          last_last?: string | null
+          item_id?: number
+          last_last?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "gift_tracker_id_fkey"
-            columns: ["id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "gift_tracker_item_id_fkey"
             columns: ["item_id"]
@@ -69,34 +66,34 @@ export interface Database {
       }
       items: {
         Row: {
-          category_id: number | null
-          created_at: string | null
+          category_id: number
+          created_at: string
           id: number
-          link: string | null
-          price: number | null
-          purchased_status: boolean | null
-          title: string | null
-          user_id: number | null
+          link: string
+          price: number
+          purchased_status: boolean
+          title: string
+          user_id: string
         }
         Insert: {
-          category_id?: number | null
-          created_at?: string | null
+          category_id: number
+          created_at?: string
           id?: number
-          link?: string | null
-          price?: number | null
-          purchased_status?: boolean | null
-          title?: string | null
-          user_id?: number | null
+          link: string
+          price: number
+          purchased_status?: boolean
+          title: string
+          user_id: string
         }
         Update: {
-          category_id?: number | null
-          created_at?: string | null
+          category_id?: number
+          created_at?: string
           id?: number
-          link?: string | null
-          price?: number | null
-          purchased_status?: boolean | null
-          title?: string | null
-          user_id?: number | null
+          link?: string
+          price?: number
+          purchased_status?: boolean
+          title?: string
+          user_id?: string
         }
         Relationships: [
           {
@@ -106,8 +103,8 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "items_category_id_fkey1"
-            columns: ["category_id"]
+            foreignKeyName: "items_user_id_fkey"
+            columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
           }
@@ -115,33 +112,37 @@ export interface Database {
       }
       users: {
         Row: {
-          created_at: string | null
-          email: string | null
-          first_name: string | null
-          id: number
-          last_name: string | null
+          created_at: string
+          first_name: string
+          id: string
+          last_name: string
           role: string | null
-          username: string | null
+          username: string
         }
         Insert: {
-          created_at?: string | null
-          email?: string | null
-          first_name?: string | null
-          id?: number
-          last_name?: string | null
+          created_at?: string
+          first_name: string
+          id: string
+          last_name: string
           role?: string | null
-          username?: string | null
+          username: string
         }
         Update: {
-          created_at?: string | null
-          email?: string | null
-          first_name?: string | null
-          id?: number
-          last_name?: string | null
+          created_at?: string
+          first_name?: string
+          id?: string
+          last_name?: string
           role?: string | null
-          username?: string | null
+          username?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
