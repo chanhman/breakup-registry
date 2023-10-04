@@ -13,20 +13,20 @@ export interface Database {
         Row: {
           created_at: string
           id: number
-          title: string
-          value: string
+          key: string
+          name: string
         }
         Insert: {
           created_at?: string
           id?: number
-          title: string
-          value: string
+          key: string
+          name: string
         }
         Update: {
           created_at?: string
           id?: number
-          title?: string
-          value?: string
+          key?: string
+          name?: string
         }
         Relationships: []
       }
@@ -66,33 +66,33 @@ export interface Database {
       }
       items: {
         Row: {
-          category_id: number
+          category_id: string | null
           created_at: string
           id: number
           link: string
+          name: string
           price: number
           purchased_status: boolean
-          title: string
           user_id: string
         }
         Insert: {
-          category_id: number
+          category_id?: string | null
           created_at?: string
           id?: number
           link: string
+          name: string
           price: number
           purchased_status?: boolean
-          title: string
           user_id: string
         }
         Update: {
-          category_id?: number
+          category_id?: string | null
           created_at?: string
           id?: number
           link?: string
+          name?: string
           price?: number
           purchased_status?: boolean
-          title?: string
           user_id?: string
         }
         Relationships: [
@@ -100,7 +100,7 @@ export interface Database {
             foreignKeyName: "items_category_id_fkey"
             columns: ["category_id"]
             referencedRelation: "categories"
-            referencedColumns: ["id"]
+            referencedColumns: ["key"]
           },
           {
             foreignKeyName: "items_user_id_fkey"
