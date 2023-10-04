@@ -7,29 +7,31 @@ import {
 } from 'react';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-import { Item } from './types';
+import { Database } from '../../../../../types/supabase';
+
+type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
   setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
 export default function AddItemForm({ setItems }: Props) {
-  const [formData, setFormData] = useState({
+  const defaultFormData = {
+    category_id: 0,
+    created_at: '',
     id: 0,
-    name: '',
-    price: 0,
     link: '',
-  });
+    price: 0,
+    purchased_status: false,
+    title: '',
+    user_id: 'ac921074-12d8-436d-8a34-2860d5008dfe',
+  };
+  const [formData, setFormData] = useState(defaultFormData);
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setItems((prev) => [...prev, formData]);
-    setFormData({
-      id: 0,
-      name: '',
-      price: 0,
-      link: '',
-    });
+    setFormData(defaultFormData);
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
@@ -52,7 +54,7 @@ export default function AddItemForm({ setItems }: Props) {
         <Input
           id="name"
           onChange={(e) => handleInputChange(e)}
-          value={formData.name}
+          value={formData.title}
           required
         />
       </div>

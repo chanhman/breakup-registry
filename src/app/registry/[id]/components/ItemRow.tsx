@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import EditItemForm from './EditItemForm';
-import { Item } from './types';
+import { Database } from '../../../../../types/supabase';
+type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
   data: Item;
@@ -13,7 +14,9 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
   const purchased = data.purchased_status;
 
   function handleDelete(id: number) {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    setItems((prev) => {
+      return prev.filter((item) => item.id !== id);
+    });
   }
 
   function handleEditToggle() {
@@ -30,7 +33,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
             </span>
           )}
           <a className="text-slate-600 hover:underline" href={data.link}>
-            {data.name}
+            {data.title}
           </a>{' '}
           ${data.price}
         </div>
@@ -55,14 +58,14 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
             <>
               <div className="flex items-center">
                 <input
-                  id={data.name}
-                  name={data.name}
-                  value={data.name}
+                  id={data.title}
+                  name={data.title}
+                  value={data.title}
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
                 <label
-                  htmlFor={data.name}
+                  htmlFor={data.title}
                   className="ml-3 min-w-0 flex-1 text-gray-500"
                 >
                   I bought this

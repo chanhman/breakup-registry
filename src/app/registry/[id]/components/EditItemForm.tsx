@@ -7,7 +7,8 @@ import {
 } from 'react';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-import { Item } from './types';
+import { Database } from '../../../../../types/supabase';
+type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
   data: Item;
@@ -24,10 +25,14 @@ export default function EditItemForm({
 }: Props) {
   const prevData = data;
   const [formData, setFormData] = useState({
+    category_id: data.category_id,
+    created_at: data.created_at,
     id: data.id,
-    name: data.name,
-    price: data.price,
     link: data.link,
+    price: data.price,
+    purchased_status: data.purchased_status,
+    title: data.title,
+    user_id: data.user_id,
   });
 
   function handleCancel() {
@@ -36,15 +41,15 @@ export default function EditItemForm({
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setItems((prev) =>
-      prev.map((item) => {
+    setItems((prev) => {
+      return prev.map((item) => {
         if (item.id === id) {
           return { ...item, ...formData };
         }
 
         return item;
-      })
-    );
+      });
+    });
     handleEditToggle();
   }
 
@@ -68,7 +73,7 @@ export default function EditItemForm({
         <Input
           id="name"
           onChange={(e) => handleInputChange(e)}
-          value={formData.name}
+          value={formData.title}
         />
       </div>
       <div className="flex-1 grid gap-2">
