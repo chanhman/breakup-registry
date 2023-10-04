@@ -21,7 +21,7 @@ export default function AddItemForm({ userId }: Props) {
           user_id: userId,
           name: formData.name,
           link: formData.link,
-          price: 100,
+          price: formData.price,
           category_id: 'other',
         },
       ])

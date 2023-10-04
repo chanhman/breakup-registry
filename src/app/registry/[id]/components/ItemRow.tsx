@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import EditItemForm from './EditItemForm';
-import { Database } from '@/lib/types/supabase';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '@/lib/types/supabase';
 type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
@@ -85,14 +85,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
           {!isAdmin && purchased && <div>Bought</div>}
         </div>
       </div>
-      {toggleEdit && (
-        <EditItemForm
-          data={data}
-          handleEditToggle={handleEditToggle}
-          id={data.id}
-          setItems={setItems}
-        />
-      )}
+      {toggleEdit && <EditItemForm data={data} />}
     </div>
   );
 }

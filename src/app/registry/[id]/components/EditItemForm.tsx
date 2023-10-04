@@ -1,10 +1,5 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useState,
-} from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
 import { Database } from '@/lib/types/supabase';
@@ -12,53 +7,45 @@ type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
   data: Item;
-  handleEditToggle: () => void;
-  id: number;
-  setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
-export default function EditItemForm({
-  data,
-  handleEditToggle,
-  id,
-  setItems,
-}: Props) {
-  const prevData = data;
-  const [formData, setFormData] = useState({
-    category_id: data.category_id,
-    created_at: data.created_at,
-    id: data.id,
-    link: data.link,
-    price: data.price,
-    purchased_status: data.purchased_status,
-    title: data.title,
-    user_id: data.user_id,
-  });
+export default function EditItemForm({ data }: Props) {
+  const { id, name, price, link } = data;
+  const [formData, setFormData] = useState({ name, price, link });
 
   function handleCancel() {
-    setFormData(prevData);
-    handleEditToggle();
+    // handleEditToggle();
   }
+  const supabase = createClientComponentClient();
 
-  function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setItems((prev) => {
-      return prev.map((item) => {
-        if (item.id === id) {
-          return { ...item, ...formData };
-        }
+    const { data, error } = await supabase
+      .from('items')
+      .update([
+        {
+          name: formData.name,
+          link: formData.link,
+          price: formData.price,
+        },
+      ])
+      .eq('id', id)
+      .select();
+    // TODO: Better error handling
+    if (error) {
+      console.log('There was an error');
+    }
 
-        return item;
-      });
-    });
-    handleEditToggle();
+    if (data) {
+      console.log('Saved');
+    }
+    // handleEditToggle();
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setFormData((prev) => ({
       ...prev,
-      id: Math.random(),
       [e.target.name]:
         e.target.name === 'price' ? parseFloat(e.target.value) : e.target.value,
     }));
@@ -74,7 +61,7 @@ export default function EditItemForm({
         <Input
           id="name"
           onChange={(e) => handleInputChange(e)}
-          value={formData.title}
+          value={formData.name}
         />
       </div>
       <div className="flex-1 grid gap-2">
