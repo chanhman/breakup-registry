@@ -37,6 +37,7 @@ export default function EditItemForm({
 
   function handleCancel() {
     setFormData(prevData);
+    handleEditToggle();
   }
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
