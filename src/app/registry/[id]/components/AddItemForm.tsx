@@ -9,7 +9,6 @@ type Props = {
 
 export default function AddItemForm({ userId }: Props) {
   const [formData, setFormData] = useState({ name: '', price: 0, link: '' });
-  console.log(formData);
   const supabase = createClientComponentClient();
 
   async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
