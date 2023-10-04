@@ -1,44 +1,42 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useState,
-} from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-import { Database } from '@/lib/types/supabase';
-
-type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
-  setItems: Dispatch<SetStateAction<Item[]>>;
+  userId: string | undefined;
 };
 
-export default function AddItemForm({ setItems }: Props) {
-  const defaultFormData = {
-    category_id: 0,
-    created_at: '',
-    id: 0,
-    link: '',
-    price: 0,
-    purchased_status: false,
-    title: '',
-    user_id: 'ac921074-12d8-436d-8a34-2860d5008dfe',
-  };
-  const [formData, setFormData] = useState(defaultFormData);
+export default function AddItemForm({ userId }: Props) {
+  const [formData, setFormData] = useState({ name: '', price: 0, link: '' });
+  console.log(formData);
+  const supabase = createClientComponentClient();
 
-  function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setItems((prev) => [...prev, formData]);
-    setFormData(defaultFormData);
+
+    const { data, error } = await supabase
+      .from('items')
+      .insert([
+        {
+          user_id: userId,
+          name: formData.name,
+          link: formData.link,
+          price: 100,
+          category_id: 'other',
+        },
+      ])
+      .select();
+    // TODO: Better error handling
+    if (error) {
+      console.log('There was an error');
+    }
+    console.log('Submitted');
   }
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
     setFormData((prev) => ({
       ...prev,
-      id: Math.random(),
       [e.target.name]:
         e.target.name === 'price' ? parseFloat(e.target.value) : e.target.value,
     }));
@@ -54,7 +52,7 @@ export default function AddItemForm({ setItems }: Props) {
         <Input
           id="name"
           onChange={(e) => handleInputChange(e)}
-          value={formData.title}
+          value={formData.name}
           required
         />
       </div>

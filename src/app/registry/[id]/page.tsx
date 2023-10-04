@@ -53,7 +53,7 @@ export default function Page() {
         )}
       </div>
 
-      {/* {isAdmin && <AddItemForm setItems={setItems} />} */}
+      {isAdmin && <AddItemForm userId={userData?.id} />}
 
       {/* <Filters /> */}
 
