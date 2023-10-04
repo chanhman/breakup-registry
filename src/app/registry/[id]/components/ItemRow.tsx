@@ -33,7 +33,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
             </span>
           )}
           <a className="text-slate-600 hover:underline" href={data.link}>
-            {data.title}
+            {data.name}
           </a>{' '}
           ${data.price}
         </div>
@@ -58,14 +58,14 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
             <>
               <div className="flex items-center">
                 <input
-                  id={data.title}
-                  name={data.title}
-                  value={data.title}
+                  id={data.name}
+                  name={data.name}
+                  value={data.name}
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
                 <label
-                  htmlFor={data.title}
+                  htmlFor={data.name}
                   className="ml-3 min-w-0 flex-1 text-gray-500"
                 >
                   I bought this
