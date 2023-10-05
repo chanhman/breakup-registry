@@ -1,9 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Database } from '@/lib/types/supabase';
 import { useDeleteItem } from '../hooks/reactQuery';
+import { Item } from '../types';
 import EditItemForm from './EditItemForm';
-
-type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
   data: Item;

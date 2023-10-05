@@ -2,9 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useEditItem } from '../hooks/reactQuery';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-import { Database } from '@/lib/types/supabase';
-
-type Item = Database['public']['Tables']['items']['Row'];
+import { Item } from '../types';
 
 type Props = {
   data: Item;

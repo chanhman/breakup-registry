@@ -1,12 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-type FormData = {
-  user_id?: string;
-  name: string;
-  link: string;
-  price: number;
-  category_id: string;
-};
+import { FormData } from '../types';
+
 const supabase = createClientComponentClient();
 
 export const useDeleteItem = () => {
