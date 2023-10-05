@@ -66,7 +66,7 @@ export interface Database {
       }
       items: {
         Row: {
-          category_id: string | null
+          category_id: string
           created_at: string
           id: number
           link: string
@@ -76,7 +76,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
-          category_id?: string | null
+          category_id: string
           created_at?: string
           id?: number
           link: string
@@ -86,7 +86,7 @@ export interface Database {
           user_id: string
         }
         Update: {
-          category_id?: string | null
+          category_id?: string
           created_at?: string
           id?: number
           link?: string
