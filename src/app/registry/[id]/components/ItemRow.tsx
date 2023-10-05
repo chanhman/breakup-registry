@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '@/lib/types/supabase';
+import { useDeleteItem } from '../hooks/reactQuery';
 import EditItemForm from './EditItemForm';
 
 type Item = Database['public']['Tables']['items']['Row'];
@@ -12,24 +11,12 @@ type Props = {
   setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
-export default function ItemRow({ data, isAdmin, setItems }: Props) {
-  const supabase = createClientComponentClient();
-
+export default function ItemRow({ data, isAdmin }: Props) {
   const [toggleEdit, setToggleEdit] = useState(false);
 
   const purchased = data.purchased_status;
 
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation({
-    mutationFn: async (id: number) => {
-      const res = await supabase.from('items').delete().eq('id', id);
-      return res;
-    },
-    onSuccess: () => {
-      alert('Deleted');
-      queryClient.invalidateQueries({ queryKey: ['items'] });
-    },
-  });
+  const { mutate, isLoading } = useDeleteItem();
 
   function handleDelete(id: number) {
     mutate(id);

@@ -1,20 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useEditItem } from '../hooks/reactQuery';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
 import { Database } from '@/lib/types/supabase';
 
 type Item = Database['public']['Tables']['items']['Row'];
-
-type FormData = {
-  user_id?: string;
-  name: string;
-  link: string;
-  price: number;
-  category_id: string;
-};
 
 type Props = {
   data: Item;
@@ -27,23 +17,8 @@ export default function EditItemForm({ data }: Props) {
   function handleCancel() {
     // handleEditToggle();
   }
-  const supabase = createClientComponentClient();
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useMutation({
-    mutationFn: async (newItem: FormData) => {
-      const res = await supabase
-        .from('items')
-        .update([newItem])
-        .eq('id', id)
-        .select();
-      return res;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['items'] });
-    },
-  });
+  const { mutate, isLoading } = useEditItem(id);
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

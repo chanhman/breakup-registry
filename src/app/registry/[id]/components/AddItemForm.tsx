@@ -1,16 +1,7 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useAddItem } from '../hooks/reactQuery';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-
-type FormData = {
-  user_id?: string;
-  name: string;
-  link: string;
-  price: number;
-  category_id: string;
-};
 
 type Props = {
   userId: string | undefined;
@@ -26,20 +17,7 @@ export default function AddItemForm({ userId }: Props) {
   };
   const [formData, setFormData] = useState(initialFormData);
 
-  const supabase = createClientComponentClient();
-
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useMutation({
-    mutationFn: async (newItem: FormData) => {
-      const res = await supabase.from('items').insert([newItem]).select();
-      return res;
-    },
-    onSuccess: () => {
-      setFormData(initialFormData);
-      queryClient.invalidateQueries({ queryKey: ['items'] });
-    },
-  });
+  const { mutate, isLoading, isSuccess } = useAddItem();
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -66,6 +44,10 @@ export default function AddItemForm({ userId }: Props) {
         e.target.name === 'price' ? parseFloat(e.target.value) : e.target.value,
     }));
   }
+
+  useEffect(() => {
+    setFormData(initialFormData);
+  }, [isSuccess]);
 
   return (
     <form
