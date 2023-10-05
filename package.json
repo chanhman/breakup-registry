@@ -15,7 +15,8 @@
     "@supabase/supabase-js": "^2.37.0",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@types/node": "latest",
