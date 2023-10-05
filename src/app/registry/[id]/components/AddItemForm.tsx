@@ -1,8 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
+
+type FormData = {
+  user_id?: string;
+  name: string;
+  link: string;
+  price: number;
+  category_id: string;
+};
 
 type Props = {
   userId: string | undefined;
@@ -10,6 +18,7 @@ type Props = {
 
 export default function AddItemForm({ userId }: Props) {
   const initialFormData = {
+    user_id: userId,
     name: '',
     price: 0,
     link: '',
@@ -19,16 +28,22 @@ export default function AddItemForm({ userId }: Props) {
 
   const supabase = createClientComponentClient();
 
-  const { mutate, isSuccess } = useMutation({
-    mutationFn: async (newItem: any) => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (newItem: FormData) => {
       const res = await supabase.from('items').insert([newItem]).select();
       return res;
+    },
+    onSuccess: () => {
+      setFormData(initialFormData);
+      queryClient.invalidateQueries({ queryKey: ['items'] });
     },
   });
 
   async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutate({
+    mutation.mutate({
       user_id: userId,
       name: formData.name,
       link: formData.link,
@@ -40,11 +55,6 @@ export default function AddItemForm({ userId }: Props) {
     // if (error) {
     //   console.log('There was an error');
     // }
-
-    if (isSuccess) {
-      alert('Submitted');
-      setFormData(initialFormData);
-    }
   }
 
   function handleInputChange(
@@ -109,7 +119,7 @@ export default function AddItemForm({ userId }: Props) {
           className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
           type="submit"
         >
-          Add item
+          {mutation.isLoading ? 'Adding item' : 'Add item'}
         </button>
       </div>
     </form>
