@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useMutation } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
@@ -18,28 +19,30 @@ export default function AddItemForm({ userId }: Props) {
 
   const supabase = createClientComponentClient();
 
+  const { mutate, isSuccess } = useMutation({
+    mutationFn: async (newItem: any) => {
+      const res = await supabase.from('items').insert([newItem]).select();
+      return res;
+    },
+  });
+
   async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    mutate({
+      user_id: userId,
+      name: formData.name,
+      link: formData.link,
+      price: formData.price,
+      category_id: formData.category_id,
+    });
 
-    const { data, error } = await supabase
-      .from('items')
-      .insert([
-        {
-          user_id: userId,
-          name: formData.name,
-          link: formData.link,
-          price: formData.price,
-          category_id: formData.category_id,
-        },
-      ])
-      .select();
     // TODO: Better error handling
-    if (error) {
-      console.log('There was an error');
-    }
+    // if (error) {
+    //   console.log('There was an error');
+    // }
 
-    if (data) {
-      console.log('Submitted');
+    if (isSuccess) {
+      alert('Submitted');
       setFormData(initialFormData);
     }
   }

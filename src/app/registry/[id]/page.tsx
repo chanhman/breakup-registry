@@ -17,7 +17,6 @@ type Item = Database['public']['Tables']['items']['Row'];
 
 export default function Page() {
   const supabase = createClientComponentClient();
-  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
 
   const isAdmin = !!searchParams.get('admin');
