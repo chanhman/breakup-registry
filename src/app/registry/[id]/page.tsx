@@ -1,5 +1,7 @@
 'use client';
 
+import { useQuery, useQueryClient } from 'react-query';
+
 import {
   User,
   createClientComponentClient,
@@ -15,12 +17,19 @@ type Item = Database['public']['Tables']['items']['Row'];
 
 export default function Page() {
   const supabase = createClientComponentClient();
-
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
+
   const isAdmin = !!searchParams.get('admin');
 
   const [items, setItems] = useState<Item[]>([]);
   const [userData, setUserData] = useState<User | null>(null);
+
+  const { isLoading, data } = useQuery('items', async () => {
+    const res = await supabase.from('items').select();
+    return res;
+  });
+  const rQItems = data?.data;
 
   useEffect(() => {
     const getUser = async () => {
@@ -58,8 +67,10 @@ export default function Page() {
 
       {/* <Filters /> */}
 
+      {isLoading && <div>It&apos;s loading, bitch!</div>}
+
       <div className="">
-        {items?.map((item) => (
+        {rQItems?.map((item) => (
           <ItemRow
             data={item}
             isAdmin={isAdmin}
