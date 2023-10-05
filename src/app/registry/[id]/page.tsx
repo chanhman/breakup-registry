@@ -25,7 +25,10 @@ export default function Page() {
   const [userData, setUserData] = useState<User | null>(null);
 
   const { isLoading, data } = useQuery('items', async () => {
-    const res = await supabase.from('items').select();
+    const res = await supabase
+      .from('items')
+      .select()
+      .order('created_at', { ascending: false });
     return res;
   });
   const rQItems = data?.data;
