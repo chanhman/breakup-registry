@@ -45,7 +45,7 @@ export default function EditItemForm({ data }: Props) {
     },
   });
 
-  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     mutation.mutate({
       name: formData.name,

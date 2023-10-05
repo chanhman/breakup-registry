@@ -41,7 +41,7 @@ export default function AddItemForm({ userId }: Props) {
     },
   });
 
-  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     mutation.mutate({
       user_id: userId,
