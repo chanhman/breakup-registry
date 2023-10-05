@@ -37,8 +37,11 @@ export default function AddItemForm({ userId }: Props) {
     if (error) {
       console.log('There was an error');
     }
-    console.log('Submitted');
-    setFormData(initialFormData);
+
+    if (data) {
+      console.log('Submitted');
+      setFormData(initialFormData);
+    }
   }
 
   function handleInputChange(
