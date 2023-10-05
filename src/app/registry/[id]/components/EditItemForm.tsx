@@ -1,9 +1,20 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
 import { Database } from '@/lib/types/supabase';
+
 type Item = Database['public']['Tables']['items']['Row'];
+
+type FormData = {
+  user_id?: string;
+  name: string;
+  link: string;
+  price: number;
+  category_id: string;
+};
 
 type Props = {
   data: Item;
@@ -18,29 +29,35 @@ export default function EditItemForm({ data }: Props) {
   }
   const supabase = createClientComponentClient();
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async (newItem: FormData) => {
+      const res = await supabase
+        .from('items')
+        .update([newItem])
+        .eq('id', id)
+        .select();
+      return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['items'] });
+    },
+  });
+
   async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { data, error } = await supabase
-      .from('items')
-      .update([
-        {
-          name: formData.name,
-          link: formData.link,
-          price: formData.price,
-          category_id: formData.category_id,
-        },
-      ])
-      .eq('id', id)
-      .select();
-    // TODO: Better error handling
-    if (error) {
-      console.log('There was an error');
-    }
+    mutation.mutate({
+      name: formData.name,
+      link: formData.link,
+      price: formData.price,
+      category_id: formData.category_id,
+    });
 
-    if (data) {
-      console.log('Saved');
-    }
-    // handleEditToggle();
+    // TODO: Better error handling
+    // if (error) {
+    //   console.log('There was an error');
+    // }
   }
 
   function handleInputChange(
@@ -109,7 +126,7 @@ export default function EditItemForm({ data }: Props) {
           className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
           type="submit"
         >
-          Save changes
+          {mutation.isLoading ? 'Saving' : 'Save'}
         </button>
       </div>
     </form>
