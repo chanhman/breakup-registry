@@ -30,7 +30,7 @@ export default function AddItemForm({ userId }: Props) {
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async (newItem: FormData) => {
       const res = await supabase.from('items').insert([newItem]).select();
       return res;
@@ -43,7 +43,7 @@ export default function AddItemForm({ userId }: Props) {
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutation.mutate({
+    mutate({
       user_id: userId,
       name: formData.name,
       link: formData.link,
@@ -119,7 +119,7 @@ export default function AddItemForm({ userId }: Props) {
           className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
           type="submit"
         >
-          {mutation.isLoading ? 'Adding item' : 'Add item'}
+          {isLoading ? 'Adding item' : 'Add item'}
         </button>
       </div>
     </form>

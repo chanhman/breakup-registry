@@ -20,7 +20,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
   const purchased = data.purchased_status;
 
   const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async (id: number) => {
       const res = await supabase.from('items').delete().eq('id', id);
       return res;
@@ -32,7 +32,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
   });
 
   function handleDelete(id: number) {
-    mutation.mutate(id);
+    mutate(id);
   }
 
   function handleEditToggle() {
@@ -66,7 +66,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
                 className="flex justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-red-500 hover:text-white hover:bg-red-500 ring-1 ring-red-500"
                 onClick={() => handleDelete(data.id)}
               >
-                {mutation.isLoading ? 'Deleting' : 'Delete'}
+                {isLoading ? 'Deleting' : 'Delete'}
               </button>
             </>
           )}

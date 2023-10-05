@@ -31,7 +31,7 @@ export default function EditItemForm({ data }: Props) {
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: async (newItem: FormData) => {
       const res = await supabase
         .from('items')
@@ -47,7 +47,7 @@ export default function EditItemForm({ data }: Props) {
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutation.mutate({
+    mutate({
       name: formData.name,
       link: formData.link,
       price: formData.price,
@@ -126,7 +126,7 @@ export default function EditItemForm({ data }: Props) {
           className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
           type="submit"
         >
-          {mutation.isLoading ? 'Saving' : 'Save'}
+          {isLoading ? 'Saving' : 'Save'}
         </button>
       </div>
     </form>
