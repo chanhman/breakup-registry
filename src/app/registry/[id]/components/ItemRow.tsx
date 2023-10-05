@@ -1,7 +1,9 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import EditItemForm from './EditItemForm';
+import { useMutation, useQueryClient } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '@/lib/types/supabase';
+import EditItemForm from './EditItemForm';
+
 type Item = Database['public']['Tables']['items']['Row'];
 
 type Props = {
@@ -14,18 +16,23 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
   const supabase = createClientComponentClient();
 
   const [toggleEdit, setToggleEdit] = useState(false);
+
   const purchased = data.purchased_status;
 
-  async function handleDelete(id: number) {
-    const { error } = await supabase.from('items').delete().eq('id', id);
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await supabase.from('items').delete().eq('id', id);
+      return res;
+    },
+    onSuccess: () => {
+      alert('Deleted');
+      queryClient.invalidateQueries({ queryKey: ['items'] });
+    },
+  });
 
-    if (error) {
-      console.log('Yo, dawg, there was an error');
-    }
-
-    if (!error) {
-      console.log('Dat shit gone');
-    }
+  function handleDelete(id: number) {
+    mutation.mutate(id);
   }
 
   function handleEditToggle() {
@@ -59,7 +66,7 @@ export default function ItemRow({ data, isAdmin, setItems }: Props) {
                 className="flex justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-red-500 hover:text-white hover:bg-red-500 ring-1 ring-red-500"
                 onClick={() => handleDelete(data.id)}
               >
-                Delete
+                {mutation.isLoading ? 'Deleting' : 'Delete'}
               </button>
             </>
           )}
