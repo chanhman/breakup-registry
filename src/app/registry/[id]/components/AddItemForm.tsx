@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
-import { useAddItem } from '../hooks/reactQuery';
+import { useAddItem, useGetCategories } from '../hooks/reactQuery';
 
 type Props = {
   userId: string | undefined;
@@ -18,6 +18,9 @@ export default function AddItemForm({ userId }: Props) {
   const [formData, setFormData] = useState(initialFormData);
 
   const { mutate, isLoading, isSuccess } = useAddItem();
+
+  const { data: categoriesData } = useGetCategories();
+  const categories = categoriesData?.data;
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -91,9 +94,15 @@ export default function AddItemForm({ userId }: Props) {
           name="category_id"
           id="category"
         >
-          <option value="other">Other</option>
-          <option value="bedroom">Bedroom</option>
-          <option value="kitchen">Kitchen</option>
+          {categories?.map((category) => (
+            <option
+              key={category.id}
+              value={category.key}
+              defaultValue={category.key === 'other' && category.key}
+            >
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
       <div>

@@ -5,7 +5,7 @@ import {
   SetStateAction,
   useState,
 } from 'react';
-import { useEditItem } from '../hooks/reactQuery';
+import { useEditItem, useGetCategories } from '../hooks/reactQuery';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
 import { Item } from '../types';
@@ -26,6 +26,9 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
   }
 
   const { mutate, isLoading } = useEditItem(id);
+
+  const { data: categoriesData } = useGetCategories();
+  const categories = categoriesData?.data;
 
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -91,9 +94,15 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
           name="category_id"
           id="category"
         >
-          <option value="other">Other</option>
-          <option value="bedroom">Bedroom</option>
-          <option value="kitchen">Kitchen</option>
+          {categories?.map((category) => (
+            <option
+              key={category.id}
+              value={category.key}
+              defaultValue={category.key === 'other' && category.key}
+            >
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="flex gap-4">
