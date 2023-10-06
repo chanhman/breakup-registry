@@ -4,17 +4,21 @@ import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
-import { useGetItems, useGetUser } from './hooks/reactQuery';
+import { useGetCategories, useGetItems, useGetUser } from './hooks/reactQuery';
 
 export default function Page() {
   const searchParams = useSearchParams();
   const isAdmin = !!searchParams.get('admin');
 
-  const { isLoading, data } = useGetItems();
-  const rQItems = data?.data;
+  const { isLoading, data: itemsData } = useGetItems();
+  const items = itemsData?.data;
 
   const { data: userData } = useGetUser();
   const userId = userData?.data.user?.id;
+
+  const { data: categoriesData } = useGetCategories();
+  const categories = categoriesData?.data;
+  console.log(categories);
 
   return (
     <div className="py-10 px-8">
@@ -37,7 +41,7 @@ export default function Page() {
       {isLoading && <div>It&apos;s loading, bitch!</div>}
 
       <div className="">
-        {rQItems?.map((item) => (
+        {items?.map((item) => (
           <ItemRow data={item} isAdmin={isAdmin} key={item.id} />
         ))}
       </div>

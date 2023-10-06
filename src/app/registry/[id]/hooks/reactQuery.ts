@@ -68,3 +68,10 @@ export const useEditItem = (id: number) => {
     },
   });
 };
+
+export const useGetCategories = () => {
+  return useQuery('categories', async () => {
+    const res = await supabase.from('categories').select();
+    return res;
+  });
+};
