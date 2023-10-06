@@ -1,8 +1,18 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { FormData } from '../types';
 
 const supabase = createClientComponentClient();
+
+export const useGetItems = () => {
+  return useQuery('items', async () => {
+    const res = await supabase
+      .from('items')
+      .select()
+      .order('created_at', { ascending: false });
+    return res;
+  });
+};
 
 export const useDeleteItem = () => {
   const queryClient = useQueryClient();

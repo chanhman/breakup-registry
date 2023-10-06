@@ -1,7 +1,5 @@
 'use client';
 
-import { useQuery, useQueryClient } from 'react-query';
-
 import {
   User,
   createClientComponentClient,
@@ -11,9 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
-import { Database } from '@/lib/types/supabase';
-
-type Item = Database['public']['Tables']['items']['Row'];
+import { useGetItems } from './hooks/reactQuery';
 
 export default function Page() {
   const supabase = createClientComponentClient();
@@ -21,16 +17,9 @@ export default function Page() {
 
   const isAdmin = !!searchParams.get('admin');
 
-  const [items, setItems] = useState<Item[]>([]);
   const [userData, setUserData] = useState<User | null>(null);
 
-  const { isLoading, data } = useQuery('items', async () => {
-    const res = await supabase
-      .from('items')
-      .select()
-      .order('created_at', { ascending: false });
-    return res;
-  });
+  const { isLoading, data } = useGetItems();
   const rQItems = data?.data;
 
   useEffect(() => {
@@ -41,14 +30,6 @@ export default function Page() {
       setUserData(user);
     };
     getUser();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await supabase.from('items').select();
-      if (data) setItems(data);
-    };
-    getData();
   }, []);
 
   return (
@@ -73,12 +54,7 @@ export default function Page() {
 
       <div className="">
         {rQItems?.map((item) => (
-          <ItemRow
-            data={item}
-            isAdmin={isAdmin}
-            setItems={setItems}
-            key={item.id}
-          />
+          <ItemRow data={item} isAdmin={isAdmin} key={item.id} />
         ))}
       </div>
     </div>

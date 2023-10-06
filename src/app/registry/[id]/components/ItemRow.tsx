@@ -6,7 +6,6 @@ import EditItemForm from './EditItemForm';
 type Props = {
   data: Item;
   isAdmin: boolean;
-  setItems: Dispatch<SetStateAction<Item[]>>;
 };
 
 export default function ItemRow({ data, isAdmin }: Props) {
