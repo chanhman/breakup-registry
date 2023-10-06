@@ -59,9 +59,13 @@ export default function Page() {
         {groupedItems.map((groupedItem) => (
           <div key={groupedItem.id}>
             <h2 className="mt-8 text-3xl">{groupedItem.category_name}</h2>
-            {groupedItem.items.map((item) => (
-              <ItemRow data={item} isAdmin={isAdmin} key={item.id} />
-            ))}
+            {groupedItem.items.length == 0 ? (
+              <div className="mt-4">None</div>
+            ) : (
+              groupedItem.items.map((item) => (
+                <ItemRow data={item} isAdmin={isAdmin} key={item.id} />
+              ))
+            )}
           </div>
         ))}
       </div>
