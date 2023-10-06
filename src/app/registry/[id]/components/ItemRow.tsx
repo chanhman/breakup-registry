@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { useDeleteItem } from '../hooks/reactQuery';
 import { Item } from '../types';
 import EditItemForm from './EditItemForm';
@@ -76,7 +76,7 @@ export default function ItemRow({ data, isAdmin }: Props) {
           {!isAdmin && purchased && <div>Bought</div>}
         </div>
       </div>
-      {toggleEdit && <EditItemForm data={data} />}
+      {toggleEdit && <EditItemForm data={data} setToggleEdit={setToggleEdit} />}
     </div>
   );
 }

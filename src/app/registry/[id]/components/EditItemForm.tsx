@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from 'react';
 import { useEditItem } from '../hooks/reactQuery';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
@@ -6,14 +12,17 @@ import { Item } from '../types';
 
 type Props = {
   data: Item;
+  setToggleEdit: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function EditItemForm({ data }: Props) {
-  const { id, name, price, link, category_id } = data;
-  const [formData, setFormData] = useState({ name, price, link, category_id });
+export default function EditItemForm({ data, setToggleEdit }: Props) {
+  const { id } = data;
+  const [initialFormDataState] = useState(data);
+  const [formData, setFormData] = useState(data);
 
   function handleCancel() {
-    // handleEditToggle();
+    setFormData(initialFormDataState);
+    setToggleEdit((prev) => !prev);
   }
 
   const { mutate, isLoading } = useEditItem(id);
