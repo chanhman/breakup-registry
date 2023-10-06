@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+
 import { FormData } from '../types';
 
 const supabase = createClientComponentClient();
