@@ -9,3 +9,9 @@ export type FormData = {
 };
 
 export type Item = Database['public']['Tables']['items']['Row'];
+
+export type GroupedItems = {
+  id: number;
+  category_name: string;
+  items: Item[];
+}[];
