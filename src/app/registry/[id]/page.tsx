@@ -1,36 +1,20 @@
 'use client';
 
-import {
-  User,
-  createClientComponentClient,
-} from '@supabase/auth-helpers-nextjs';
-import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
-import { useGetItems } from './hooks/reactQuery';
+import { useGetItems, useGetUser } from './hooks/reactQuery';
 
 export default function Page() {
-  const supabase = createClientComponentClient();
   const searchParams = useSearchParams();
-
   const isAdmin = !!searchParams.get('admin');
-
-  const [userData, setUserData] = useState<User | null>(null);
 
   const { isLoading, data } = useGetItems();
   const rQItems = data?.data;
 
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUserData(user);
-    };
-    getUser();
-  }, []);
+  const { data: userData } = useGetUser();
+  const userId = userData?.data.user?.id;
 
   return (
     <div className="py-10 px-8">
@@ -46,7 +30,7 @@ export default function Page() {
         )}
       </div>
 
-      {isAdmin && <AddItemForm userId={userData?.id} />}
+      {isAdmin && <AddItemForm userId={userId} />}
 
       {/* <Filters /> */}
 

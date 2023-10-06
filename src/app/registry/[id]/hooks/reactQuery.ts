@@ -4,6 +4,13 @@ import { FormData } from '../types';
 
 const supabase = createClientComponentClient();
 
+export const useGetUser = () => {
+  return useQuery('user', async () => {
+    const res = await supabase.auth.getUser();
+    return res;
+  });
+};
+
 export const useGetItems = () => {
   return useQuery('items', async () => {
     const res = await supabase
