@@ -9,11 +9,12 @@ type Props = {
 
 export default function AddItemForm({ userId }: Props) {
   const initialFormData = {
-    user_id: userId,
+    category_id: 'other',
+    link: '',
     name: '',
     price: 0,
-    link: '',
-    category_id: 'other',
+    registry_key: 'mary',
+    user_id: userId,
   };
   const [formData, setFormData] = useState(initialFormData);
 
@@ -25,11 +26,12 @@ export default function AddItemForm({ userId }: Props) {
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     mutate({
-      user_id: userId,
-      name: formData.name,
-      link: formData.link,
-      price: formData.price,
       category_id: formData.category_id,
+      link: formData.link,
+      name: formData.name,
+      price: formData.price,
+      registry_key: formData.registry_key,
+      user_id: userId,
     });
 
     // TODO: Better error handling
