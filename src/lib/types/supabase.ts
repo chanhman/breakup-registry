@@ -38,6 +38,7 @@ export interface Database {
           id: number
           item_id: number
           last_last: string
+          user_id: string
         }
         Insert: {
           created_at?: string
@@ -46,6 +47,7 @@ export interface Database {
           id?: number
           item_id: number
           last_last: string
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -54,12 +56,19 @@ export interface Database {
           id?: number
           item_id?: number
           last_last?: string
+          user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "gift_tracker_item_id_fkey"
             columns: ["item_id"]
             referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gift_tracker_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]
@@ -73,6 +82,7 @@ export interface Database {
           name: string
           price: number
           purchased_status: boolean
+          registry_key: string
           user_id: string
         }
         Insert: {
@@ -83,6 +93,7 @@ export interface Database {
           name: string
           price: number
           purchased_status?: boolean
+          registry_key: string
           user_id: string
         }
         Update: {
@@ -93,6 +104,7 @@ export interface Database {
           name?: string
           price?: number
           purchased_status?: boolean
+          registry_key?: string
           user_id?: string
         }
         Relationships: [
@@ -103,7 +115,44 @@ export interface Database {
             referencedColumns: ["key"]
           },
           {
+            foreignKeyName: "items_registry_key_fkey"
+            columns: ["registry_key"]
+            referencedRelation: "registry"
+            referencedColumns: ["key"]
+          },
+          {
             foreignKeyName: "items_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      registry: {
+        Row: {
+          created_at: string
+          id: number
+          key: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          key: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          key?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registry_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
