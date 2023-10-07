@@ -1,6 +1,7 @@
 'use client';
 
-import { useSearchParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
@@ -12,14 +13,12 @@ export default function Page() {
   const pathnameArray = pathname.split('/');
   const registryName = pathnameArray[pathnameArray.length - 1];
 
-  const searchParams = useSearchParams();
-  const isAdmin = !!searchParams.get('admin');
-
   const { isLoading, data: itemsData } = useGetItems();
   const items = itemsData?.data;
 
   const { data: userData } = useGetUser();
   const userId = userData?.data.user?.id;
+  const isAdmin = !!userData?.data.user;
 
   const { data: categoriesData } = useGetCategories();
   const categories = categoriesData?.data;
