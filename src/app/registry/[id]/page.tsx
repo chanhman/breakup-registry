@@ -1,13 +1,17 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
 import { useGetCategories, useGetItems, useGetUser } from './hooks/reactQuery';
-import { GroupedItems } from './types';
+import { GroupedItems, Item } from './types';
 
 export default function Page() {
+  const pathname = usePathname();
+  const pathnameArray = pathname.split('/');
+  const registryName = pathnameArray[pathnameArray.length - 1];
+
   const searchParams = useSearchParams();
   const isAdmin = !!searchParams.get('admin');
 
@@ -28,8 +32,11 @@ export default function Page() {
       category_name: category.name,
       items: [],
     });
-    items?.forEach((item) => {
-      if (item.category_id === category.key) {
+    items?.forEach((item: Item) => {
+      if (
+        item.category_id === category.key &&
+        item.registry_key === registryName
+      ) {
         groupedItems[index].items.push(item);
       }
     });
