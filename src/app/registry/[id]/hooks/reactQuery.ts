@@ -69,6 +69,25 @@ export const useEditItem = (id: number) => {
   });
 };
 
+export const useClaimItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await supabase
+        .from('items')
+        .update({ purchased_status: true })
+        .eq('id', id)
+        .select();
+      return res;
+    },
+    onSuccess: () => {
+      alert('Claimed');
+      queryClient.invalidateQueries({ queryKey: ['items'] });
+    },
+  });
+};
+
 export const useGetCategories = () => {
   return useQuery('categories', async () => {
     const res = await supabase.from('categories').select().order('key');
