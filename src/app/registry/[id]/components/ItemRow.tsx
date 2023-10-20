@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useDeleteItem } from '../hooks/reactQuery';
+import { useDeleteItem, useClaimItem } from '../hooks/reactQuery';
+import { useGetRegistryName } from '../hooks/useGetRegistryName';
 import { Item } from '../types';
 import EditItemForm from './EditItemForm';
 
@@ -10,13 +11,19 @@ type Props = {
 
 export default function ItemRow({ data, isAdmin }: Props) {
   const [toggleEdit, setToggleEdit] = useState(false);
+  const registryName = useGetRegistryName();
 
   const purchased = data.purchased_status;
 
   const { mutate, isLoading } = useDeleteItem();
+  const { mutate: claimed } = useClaimItem();
 
   function handleDelete(id: number) {
     mutate(id);
+  }
+
+  function handleClaimed() {
+    claimed(data.id);
   }
 
   function handleEditToggle() {
@@ -55,23 +62,12 @@ export default function ItemRow({ data, isAdmin }: Props) {
             </>
           )}
           {!isAdmin && !purchased && (
-            <>
-              <div className="flex items-center">
-                <input
-                  id={data.name}
-                  name={data.name}
-                  value={data.name}
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor={data.name}
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  I bought this
-                </label>
-              </div>
-            </>
+            <button
+              className="pointer-events-auto ml-4 flex-none px-2 py-[0.3125rem] font-medium text-slate-700 ring-1 ring-slate-700/10 hover:bg-slate-50"
+              onClick={handleClaimed}
+            >
+              I bought dis
+            </button>
           )}
           {!isAdmin && purchased && <div>Bought</div>}
         </div>

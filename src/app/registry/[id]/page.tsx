@@ -1,23 +1,18 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
 import { useGetCategories, useGetItems, useGetUser } from './hooks/reactQuery';
+import { useGetRegistryName } from './hooks/useGetRegistryName';
 import { GroupedItems, Item } from './types';
 
 export default function Page() {
-  const pathname = usePathname();
-  const pathnameArray = pathname.split('/');
-  const registryName = pathnameArray[pathnameArray.length - 1];
-
+  const registryName = useGetRegistryName();
   const { isLoading, data: itemsData } = useGetItems();
   const items = itemsData?.data;
 
   const { data: userData } = useGetUser();
-  const userId = userData?.data.user?.id;
   const isAdmin = !!userData?.data.user;
 
   const { data: categoriesData } = useGetCategories();
@@ -55,7 +50,7 @@ export default function Page() {
         )}
       </div>
 
-      {isAdmin && <AddItemForm userId={userId} />}
+      {isAdmin && <AddItemForm />}
 
       {/* <Filters /> */}
 
