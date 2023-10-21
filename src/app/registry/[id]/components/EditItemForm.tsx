@@ -20,19 +20,19 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
   const [initialFormDataState] = useState(data);
   const [formData, setFormData] = useState(data);
 
+  const { mutate: editItem, isLoading } = useEditItem(id);
+
+  const { data: categoriesData } = useGetCategories();
+  const categories = categoriesData?.data;
+
   function handleCancel() {
     setFormData(initialFormDataState);
     setToggleEdit((prev) => !prev);
   }
 
-  const { mutate, isLoading } = useEditItem(id);
-
-  const { data: categoriesData } = useGetCategories();
-  const categories = categoriesData?.data;
-
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutate({
+    editItem({
       name: formData.name,
       link: formData.link,
       price: formData.price,
