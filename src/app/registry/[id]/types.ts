@@ -9,7 +9,17 @@ export type FormData = {
   user_id?: string;
 };
 
+export type GiftTrackerFormData = {
+  email: string;
+  first_name: string;
+  item_id: number;
+  last_name: string;
+  registry_key: string;
+};
+
 export type Item = Database['public']['Tables']['items']['Row'];
+
+export type GiftTracker = Database['public']['Tables']['gift_tracker']['Row'];
 
 export type GroupedItems = {
   id: number;
