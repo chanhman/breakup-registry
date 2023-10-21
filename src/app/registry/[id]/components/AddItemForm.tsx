@@ -3,17 +3,13 @@ import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
 import { useAddItem, useGetCategories } from '../hooks/reactQuery';
 
-type Props = {
-  userId: string | undefined;
-};
-
-export default function AddItemForm({ userId }: Props) {
+export default function AddItemForm() {
   const initialFormData = {
-    user_id: userId,
+    category_id: 'other',
+    link: '',
     name: '',
     price: 0,
-    link: '',
-    category_id: 'other',
+    registry_key: 'mary',
   };
   const [formData, setFormData] = useState(initialFormData);
 
@@ -25,11 +21,11 @@ export default function AddItemForm({ userId }: Props) {
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     mutate({
-      user_id: userId,
-      name: formData.name,
-      link: formData.link,
-      price: formData.price,
       category_id: formData.category_id,
+      link: formData.link,
+      name: formData.name,
+      price: formData.price,
+      registry_key: formData.registry_key,
     });
 
     // TODO: Better error handling
@@ -109,6 +105,7 @@ export default function AddItemForm({ userId }: Props) {
         <button
           className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
           type="submit"
+          disabled={isLoading}
         >
           {isLoading ? 'Adding item' : 'Add item'}
         </button>

@@ -37,8 +37,8 @@ export interface Database {
           first_name: string
           id: number
           item_id: number
-          last_last: string
-          user_id: string
+          last_name: string
+          registry_key: string
         }
         Insert: {
           created_at?: string
@@ -46,8 +46,8 @@ export interface Database {
           first_name: string
           id?: number
           item_id: number
-          last_last: string
-          user_id: string
+          last_name: string
+          registry_key: string
         }
         Update: {
           created_at?: string
@@ -55,8 +55,8 @@ export interface Database {
           first_name?: string
           id?: number
           item_id?: number
-          last_last?: string
-          user_id?: string
+          last_name?: string
+          registry_key?: string
         }
         Relationships: [
           {
@@ -66,10 +66,10 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "gift_tracker_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "gift_tracker_registry_key_fkey"
+            columns: ["registry_key"]
+            referencedRelation: "registry"
+            referencedColumns: ["key"]
           }
         ]
       }
@@ -94,7 +94,7 @@ export interface Database {
           price: number
           purchased_status?: boolean
           registry_key: string
-          user_id: string
+          user_id?: string
         }
         Update: {
           category_id?: string
@@ -161,37 +161,33 @@ export interface Database {
       }
       users: {
         Row: {
-          created_at: string
-          first_name: string
-          id: string
-          last_name: string
+          created_at: string | null
+          email: string | null
+          first_name: string | null
+          id: number
+          last_name: string | null
           role: string | null
-          username: string
+          username: string | null
         }
         Insert: {
-          created_at?: string
-          first_name: string
-          id: string
-          last_name: string
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
           role?: string | null
-          username: string
+          username?: string | null
         }
         Update: {
-          created_at?: string
-          first_name?: string
-          id?: string
-          last_name?: string
+          created_at?: string | null
+          email?: string | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
           role?: string | null
-          username?: string
+          username?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "users_id_fkey"
-            columns: ["id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
     }
     Views: {
