@@ -42,12 +42,6 @@ export default function Page() {
         <h1 className="text-2xl text-slate-900 sm:text-4xl">
           Mary&apos;s Registry
         </h1>
-        {isAdmin && (
-          <div className="text-right">
-            <div>Your breakup registry link</div>
-            <div>http://localhost:3000/registry/chanh</div>
-          </div>
-        )}
       </div>
 
       {isAdmin && <AddItemForm />}
