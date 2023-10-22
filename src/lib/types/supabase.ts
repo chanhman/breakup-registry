@@ -75,7 +75,7 @@ export interface Database {
       }
       items: {
         Row: {
-          category_id: string
+          category_key: string
           created_at: string
           id: number
           link: string
@@ -86,7 +86,7 @@ export interface Database {
           user_id: string
         }
         Insert: {
-          category_id: string
+          category_key: string
           created_at?: string
           id?: number
           link: string
@@ -97,7 +97,7 @@ export interface Database {
           user_id?: string
         }
         Update: {
-          category_id?: string
+          category_key?: string
           created_at?: string
           id?: number
           link?: string
@@ -109,8 +109,8 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "items_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: "items_category_key_fkey"
+            columns: ["category_key"]
             referencedRelation: "categories"
             referencedColumns: ["key"]
           },
@@ -161,33 +161,40 @@ export interface Database {
       }
       users: {
         Row: {
-          created_at: string | null
-          email: string | null
+          created_at: string
           first_name: string | null
-          id: number
+          id: string
           last_name: string | null
-          role: string | null
-          username: string | null
+          registry_key: string
         }
         Insert: {
-          created_at?: string | null
-          email?: string | null
+          created_at?: string
           first_name?: string | null
-          id?: number
+          id: string
           last_name?: string | null
-          role?: string | null
-          username?: string | null
+          registry_key: string
         }
         Update: {
-          created_at?: string | null
-          email?: string | null
+          created_at?: string
           first_name?: string | null
-          id?: number
+          id?: string
           last_name?: string | null
-          role?: string | null
-          username?: string | null
+          registry_key?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_registry_key_fkey"
+            columns: ["registry_key"]
+            referencedRelation: "registry"
+            referencedColumns: ["key"]
+          }
+        ]
       }
     }
     Views: {
