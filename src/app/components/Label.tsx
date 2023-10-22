@@ -4,12 +4,5 @@ type Props = {
 };
 
 export default function Label({ text, htmlFor }: Props) {
-  return (
-    <label
-      className="block text-sm font-semibold leading-6 text-slate-900"
-      htmlFor={htmlFor}
-    >
-      {text}
-    </label>
-  );
+  return <label htmlFor={htmlFor}>{text}</label>;
 }

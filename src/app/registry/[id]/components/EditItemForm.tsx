@@ -89,7 +89,6 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
       <div className="flex-1 grid gap-2">
         <Label text="Category" htmlFor="category" />
         <select
-          className="ring-1 ring-inset ring-gray-300"
           onChange={(e) => handleInputChange(e)}
           value={formData.category_key}
           name="category_key"
@@ -107,19 +106,10 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
         </select>
       </div>
       <div className="flex gap-4">
-        <button
-          className="pointer-events-auto ml-4 flex-none px-2 py-[0.3125rem] font-medium text-slate-700 ring-1 ring-slate-700/10 hover:bg-slate-50"
-          onClick={handleCancel}
-          type="button"
-        >
+        <button onClick={handleCancel} type="button">
           Cancel
         </button>
-        <button
-          className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
-          type="submit"
-        >
-          {isLoading ? 'Saving' : 'Save'}
-        </button>
+        <button type="submit">{isLoading ? 'Saving' : 'Save'}</button>
       </div>
     </form>
   );

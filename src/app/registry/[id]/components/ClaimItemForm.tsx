@@ -83,17 +83,10 @@ export default function ClaimItemForm({ data, setToggleEdit }: Props) {
         />
       </div>
       <div className="flex gap-4">
-        <button
-          className="pointer-events-auto ml-4 flex-none px-2 py-[0.3125rem] font-medium text-slate-700 ring-1 ring-slate-700/10 hover:bg-slate-50"
-          onClick={handleCancel}
-          type="button"
-        >
+        <button onClick={handleCancel} type="button">
           Cancel
         </button>
-        <button
-          className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
-          type="submit"
-        >
+        <button type="submit">
           {claiming || adding ? 'Claiming' : 'Claim'}
         </button>
       </div>

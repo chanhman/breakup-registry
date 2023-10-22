@@ -88,7 +88,6 @@ export default function AddItemForm() {
       <div className="flex-1 grid gap-2">
         <Label text="Category" htmlFor="category" />
         <select
-          className="ring-1 ring-inset ring-gray-300"
           onChange={(e) => handleInputChange(e)}
           value={formData.category_key}
           name="category_key"
@@ -106,11 +105,7 @@ export default function AddItemForm() {
         </select>
       </div>
       <div>
-        <button
-          className="inline-flex justify-center bg-slate-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white hover:bg-slate-500"
-          type="submit"
-          disabled={isLoading}
-        >
+        <button type="submit" disabled={isLoading}>
           {isLoading ? 'Adding item' : 'Add item'}
         </button>
       </div>

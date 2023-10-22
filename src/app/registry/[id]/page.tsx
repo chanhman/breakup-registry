@@ -65,11 +65,7 @@ export default function Page() {
       {gotUser && (
         <>
           <div className="flex justify-between items-center">
-            {publicUserName && (
-              <h1 className="text-2xl text-slate-900 sm:text-4xl">
-                {publicUserName}&apos;s Registry
-              </h1>
-            )}
+            {publicUserName && <h1>{publicUserName}&apos;s Registry</h1>}
           </div>
 
           {isAdmin && <AddItemForm />}
@@ -82,7 +78,7 @@ export default function Page() {
         <div>
           {groupedItems.map((groupedItem) => (
             <div key={groupedItem.id}>
-              <h2 className="mt-8 text-3xl">{groupedItem.category_name}</h2>
+              <h2 className="mt-8">{groupedItem.category_name}</h2>
               {groupedItem.items.length == 0 ? (
                 <div className="mt-4">None</div>
               ) : (
