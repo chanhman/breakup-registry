@@ -1,24 +1,28 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
 import {
+  useAuthGetUser,
   useGetCategories,
   useGetItems,
-  useAuthGetUser,
+  useRegistryCount,
   useGetUserByRegistryKey,
 } from './hooks/reactQuery';
 import { useGetRegistryKey } from './hooks/useGetRegistryKey';
 import { GroupedItems, Item } from './types';
 
 export default function Page() {
+  const router = useRouter();
   const registryKey = useGetRegistryKey();
   const { isLoading: gettingItems, data: itemsData } = useGetItems(registryKey);
   const { data: authUserData } = useAuthGetUser();
   const { data: categoriesData } = useGetCategories();
   const { isSuccess: gotUser, data: userData } =
     useGetUserByRegistryKey(registryKey);
+  const { data: registryCount } = useRegistryCount(registryKey);
 
   const authUserId = authUserData?.data?.user?.id;
   const publicUserId = userData?.data?.[0]?.id;
@@ -27,6 +31,11 @@ export default function Page() {
   const isAdmin = !!authUserData?.data?.user && authUserId === publicUserId;
   const categories = categoriesData?.data;
   const groupedItems: GroupedItems = [];
+  const registryExists = registryCount && !!registryCount.count;
+
+  if (registryExists === false) {
+    router.push('/not-found');
+  }
 
   categories?.forEach((category, index) => {
     groupedItems.push({
@@ -69,9 +78,9 @@ export default function Page() {
         </>
       )}
 
-      <div>
-        {items && items.length > 0 ? (
-          groupedItems.map((groupedItem) => (
+      {items && items.length > 0 ? (
+        <div>
+          {groupedItems.map((groupedItem) => (
             <div key={groupedItem.id}>
               <h2 className="mt-8 text-3xl">{groupedItem.category_name}</h2>
               {groupedItem.items.length == 0 ? (
@@ -82,11 +91,11 @@ export default function Page() {
                 ))
               )}
             </div>
-          ))
-        ) : (
-          <div>Empty</div>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div>Empty</div>
+      )}
     </div>
   );
 }
