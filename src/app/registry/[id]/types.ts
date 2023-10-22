@@ -1,7 +1,7 @@
 import { Database } from '@/lib/types/supabase';
 
 export type FormData = {
-  category_id: string;
+  category_key: string;
   link: string;
   name: string;
   price: number;

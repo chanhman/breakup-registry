@@ -36,7 +36,7 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
       name: formData.name,
       link: formData.link,
       price: formData.price,
-      category_id: formData.category_id,
+      category_key: formData.category_key,
     });
 
     // TODO: Better error handling
@@ -90,8 +90,8 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
         <select
           className="ring-1 ring-inset ring-gray-300"
           onChange={(e) => handleInputChange(e)}
-          value={formData.category_id}
-          name="category_id"
+          value={formData.category_key}
+          name="category_key"
           id="category"
         >
           {categories?.map((category) => (

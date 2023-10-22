@@ -32,7 +32,7 @@ export default function Page() {
     });
     items?.forEach((item: Item) => {
       if (
-        item.category_id === category.key &&
+        item.category_key === category.key &&
         item.registry_key === registryKey
       ) {
         groupedItems[index].items.push(item);

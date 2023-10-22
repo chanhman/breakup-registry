@@ -5,7 +5,7 @@ import { useAddItem, useGetCategories } from '../hooks/reactQuery';
 
 export default function AddItemForm() {
   const initialFormData = {
-    category_id: 'other',
+    category_key: 'other',
     link: '',
     name: '',
     price: 0,
@@ -21,7 +21,7 @@ export default function AddItemForm() {
   function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     mutate({
-      category_id: formData.category_id,
+      category_key: formData.category_key,
       link: formData.link,
       name: formData.name,
       price: formData.price,
@@ -86,8 +86,8 @@ export default function AddItemForm() {
         <select
           className="ring-1 ring-inset ring-gray-300"
           onChange={(e) => handleInputChange(e)}
-          value={formData.category_id}
-          name="category_id"
+          value={formData.category_key}
+          name="category_key"
           id="category"
         >
           {categories?.map((category) => (
