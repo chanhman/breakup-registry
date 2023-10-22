@@ -44,11 +44,12 @@ export const useGetUserByRegistryKey = (registryKey: string) => {
 
 // Items
 
-export const useGetItems = () => {
+export const useGetItems = (registryKey: string) => {
   return useQuery('items', async () => {
     const res = await supabase
       .from('items')
       .select()
+      .eq('registry_key', registryKey)
       .order('created_at', { ascending: false });
     return res;
   });
