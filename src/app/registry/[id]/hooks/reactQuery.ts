@@ -5,10 +5,34 @@ import { FormData, GiftTrackerFormData } from '../types';
 
 const supabase = createClientComponentClient();
 
-export const useGetUser = () => {
-  return useQuery('user', async () => {
+export const useAuthGetUser = () => {
+  return useQuery('authUser', async () => {
     const res = await supabase.auth.getUser();
     return res;
+  });
+};
+
+export const useGetUsers = (userId: string | undefined) => {
+  return useQuery({
+    queryKey: 'users',
+    queryFn: async function () {
+      const res = await supabase.from('users').select().eq('id', userId);
+      return res;
+    },
+    enabled: !!userId,
+  });
+};
+
+export const useGetUserByRegistryKey = (registryKey: string) => {
+  return useQuery({
+    queryKey: 'user',
+    queryFn: async function () {
+      const res = await supabase
+        .from('users')
+        .select()
+        .eq('registry_key', registryKey);
+      return res;
+    },
   });
 };
 

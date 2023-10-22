@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 
-import { useGetRegistryName } from '../hooks/useGetRegistryName';
+import { useGetRegistryKey } from '../hooks/useGetRegistryKey';
 import { useClaimItem, useAddToGiftTracker } from '../hooks/reactQuery';
 import { Item } from '../types';
 
@@ -19,13 +19,13 @@ type Props = {
 };
 
 export default function ClaimItemForm({ data, setToggleEdit }: Props) {
-  const registryName = useGetRegistryName();
+  const registryKey = useGetRegistryKey();
   const initialFormDataState = {
     email: '',
     first_name: '',
     item_id: data.id,
     last_name: '',
-    registry_key: registryName,
+    registry_key: registryKey,
   };
   const [formData, setFormData] = useState(initialFormDataState);
   const { mutate: claimItem, isLoading: claiming } = useClaimItem();

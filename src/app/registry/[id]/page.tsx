@@ -3,16 +3,20 @@
 import AddItemForm from './components/AddItemForm';
 import ItemRow from './components/ItemRow';
 // import Filters from './components/Filters';
-import { useGetCategories, useGetItems, useGetUser } from './hooks/reactQuery';
-import { useGetRegistryName } from './hooks/useGetRegistryName';
+import {
+  useGetCategories,
+  useGetItems,
+  useAuthGetUser,
+} from './hooks/reactQuery';
+import { useGetRegistryKey } from './hooks/useGetRegistryKey';
 import { GroupedItems, Item } from './types';
 
 export default function Page() {
-  const registryName = useGetRegistryName();
+  const registryKey = useGetRegistryKey();
   const { isLoading, data: itemsData } = useGetItems();
   const items = itemsData?.data;
 
-  const { data: userData } = useGetUser();
+  const { data: userData } = useAuthGetUser();
   const isAdmin = !!userData?.data.user;
 
   const { data: categoriesData } = useGetCategories();
@@ -29,7 +33,7 @@ export default function Page() {
     items?.forEach((item: Item) => {
       if (
         item.category_id === category.key &&
-        item.registry_key === registryName
+        item.registry_key === registryKey
       ) {
         groupedItems[index].items.push(item);
       }
