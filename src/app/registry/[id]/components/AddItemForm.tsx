@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Label from '@/app/components/Label';
 import Input from '@/app/components/Input';
 import { useAddItem, useGetCategories } from '../hooks/reactQuery';
+import { FormData } from '../types';
 
 export default function AddItemForm() {
   const initialFormData = {
@@ -10,8 +11,10 @@ export default function AddItemForm() {
     name: '',
     price: 0,
     registry_key: 'mary',
-  };
-  const [formData, setFormData] = useState(initialFormData);
+    purchased_status: false,
+  } as FormData;
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const { mutate, isLoading, isSuccess } = useAddItem();
 
@@ -26,6 +29,7 @@ export default function AddItemForm() {
       name: formData.name,
       price: formData.price,
       registry_key: formData.registry_key,
+      purchased_status: formData.purchased_status,
     });
 
     // TODO: Better error handling

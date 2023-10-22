@@ -7,7 +7,7 @@ import {
 } from 'react';
 
 import { useGetRegistryKey } from '../hooks/useGetRegistryKey';
-import { useClaimItem, useAddToGiftTracker } from '../hooks/reactQuery';
+import { useEditItem, useAddToGiftTracker } from '../hooks/reactQuery';
 import { Item } from '../types';
 
 import Label from '@/app/components/Label';
@@ -28,7 +28,7 @@ export default function ClaimItemForm({ data, setToggleEdit }: Props) {
     registry_key: registryKey,
   };
   const [formData, setFormData] = useState(initialFormDataState);
-  const { mutate: claimItem, isLoading: claiming } = useClaimItem();
+  const { mutate: claimItem, isLoading: claiming } = useEditItem(data.id);
   const { mutate: addToGiftTracker, isLoading: adding } = useAddToGiftTracker();
 
   function handleCancel() {
@@ -38,7 +38,7 @@ export default function ClaimItemForm({ data, setToggleEdit }: Props) {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    claimItem(data.id);
+    claimItem({ ...data, purchased_status: true });
     addToGiftTracker(formData);
   }
 

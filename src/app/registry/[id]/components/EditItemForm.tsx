@@ -37,6 +37,7 @@ export default function EditItemForm({ data, setToggleEdit }: Props) {
       link: formData.link,
       price: formData.price,
       category_key: formData.category_key,
+      purchased_status: formData.purchased_status,
     });
 
     // TODO: Better error handling

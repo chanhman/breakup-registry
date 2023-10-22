@@ -7,6 +7,7 @@ export type FormData = {
   price: number;
   registry_key?: string;
   user_id?: string;
+  purchased_status: boolean;
 };
 
 export type GiftTrackerFormData = {
