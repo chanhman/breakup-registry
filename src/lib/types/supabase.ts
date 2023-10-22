@@ -68,8 +68,8 @@ export interface Database {
           {
             foreignKeyName: "gift_tracker_registry_key_fkey"
             columns: ["registry_key"]
-            referencedRelation: "registry"
-            referencedColumns: ["key"]
+            referencedRelation: "registries"
+            referencedColumns: ["registry_key"]
           }
         ]
       }
@@ -117,8 +117,8 @@ export interface Database {
           {
             foreignKeyName: "items_registry_key_fkey"
             columns: ["registry_key"]
-            referencedRelation: "registry"
-            referencedColumns: ["key"]
+            referencedRelation: "registries"
+            referencedColumns: ["registry_key"]
           },
           {
             foreignKeyName: "items_user_id_fkey"
@@ -128,31 +128,31 @@ export interface Database {
           }
         ]
       }
-      registry: {
+      registries: {
         Row: {
           created_at: string
           id: number
-          key: string
-          name: string
+          registry_key: string
+          registry_name: string
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
-          key: string
-          name: string
+          registry_key: string
+          registry_name: string
           user_id: string
         }
         Update: {
           created_at?: string
           id?: number
-          key?: string
-          name?: string
+          registry_key?: string
+          registry_name?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "registry_user_id_fkey"
+            foreignKeyName: "registries_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -191,8 +191,8 @@ export interface Database {
           {
             foreignKeyName: "users_registry_key_fkey"
             columns: ["registry_key"]
-            referencedRelation: "registry"
-            referencedColumns: ["key"]
+            referencedRelation: "registries"
+            referencedColumns: ["registry_key"]
           }
         ]
       }
