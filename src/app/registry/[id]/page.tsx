@@ -14,14 +14,12 @@ import { GroupedItems, Item } from './types';
 export default function Page() {
   const registryKey = useGetRegistryKey();
   const { isLoading, data: itemsData } = useGetItems();
-  const items = itemsData?.data;
-
-  const { data: userData } = useAuthGetUser();
-  const isAdmin = !!userData?.data.user;
-
+  const { data: authUserData } = useAuthGetUser();
   const { data: categoriesData } = useGetCategories();
-  const categories = categoriesData?.data;
 
+  const items = itemsData?.data;
+  const isAdmin = !!authUserData?.data.user;
+  const categories = categoriesData?.data;
   const groupedItems: GroupedItems = [];
 
   categories?.forEach((category, index) => {
