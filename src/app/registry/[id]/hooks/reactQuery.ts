@@ -1,3 +1,16 @@
+/* 
+Supabase React query hooks
+- Categories
+  - Get
+- Gift tracker
+- Items
+  - Get
+  - Delete
+  - Add
+  - Edit
+- Users
+- Auth users
+*/
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
@@ -5,12 +18,16 @@ import { FormData, GiftTrackerFormData } from '../types';
 
 const supabase = createClientComponentClient();
 
+// Auth users
+
 export const useAuthGetUser = () => {
   return useQuery('authUser', async () => {
     const res = await supabase.auth.getUser();
     return res;
   });
 };
+
+// Users
 
 export const useGetUserByRegistryKey = (registryKey: string) => {
   return useQuery({
@@ -24,6 +41,8 @@ export const useGetUserByRegistryKey = (registryKey: string) => {
     },
   });
 };
+
+// Items
 
 export const useGetItems = () => {
   return useQuery('items', async () => {
@@ -71,7 +90,7 @@ export const useEditItem = (id: number) => {
     mutationFn: async (newItem: FormData) => {
       const res = await supabase
         .from('items')
-        .update([newItem])
+        .update(newItem)
         .eq('id', id)
         .select();
       return res;
@@ -79,13 +98,6 @@ export const useEditItem = (id: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['items'] });
     },
-  });
-};
-
-export const useGetCategories = () => {
-  return useQuery('categories', async () => {
-    const res = await supabase.from('categories').select().order('key');
-    return res;
   });
 };
 
@@ -107,6 +119,17 @@ export const useClaimItem = () => {
     },
   });
 };
+
+// Categories
+
+export const useGetCategories = () => {
+  return useQuery('categories', async () => {
+    const res = await supabase.from('categories').select().order('key');
+    return res;
+  });
+};
+
+// Gift tracker
 
 export const useAddToGiftTracker = () => {
   return useMutation({
