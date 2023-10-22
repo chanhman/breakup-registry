@@ -27,6 +27,21 @@ export const useAuthGetUser = () => {
   });
 };
 
+// Registries
+
+export const useRegistryCount = (registryKey: string) => {
+  return useQuery({
+    queryKey: 'registry_count',
+    queryFn: async function () {
+      const res = await supabase
+        .from('registries')
+        .select('*', { count: 'exact', head: true })
+        .eq('registry_key', registryKey);
+      return res;
+    },
+  });
+};
+
 // Users
 
 export const useGetUserByRegistryKey = (registryKey: string) => {
