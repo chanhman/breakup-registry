@@ -12,24 +12,13 @@ export const useAuthGetUser = () => {
   });
 };
 
-export const useGetUsers = (userId: string | undefined) => {
-  return useQuery({
-    queryKey: 'users',
-    queryFn: async function () {
-      const res = await supabase.from('users').select().eq('id', userId);
-      return res;
-    },
-    enabled: !!userId,
-  });
-};
-
 export const useGetUserByRegistryKey = (registryKey: string) => {
   return useQuery({
     queryKey: 'user',
     queryFn: async function () {
       const res = await supabase
         .from('users')
-        .select()
+        .select('id, first_name')
         .eq('registry_key', registryKey);
       return res;
     },
