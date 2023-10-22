@@ -14,7 +14,7 @@ import { GroupedItems, Item } from './types';
 
 export default function Page() {
   const registryKey = useGetRegistryKey();
-  const { isLoading: gettingItems, data: itemsData } = useGetItems();
+  const { isLoading: gettingItems, data: itemsData } = useGetItems(registryKey);
   const { data: authUserData } = useAuthGetUser();
   const { data: categoriesData } = useGetCategories();
   const { isSuccess: gotUser, data: userData } =
@@ -44,42 +44,48 @@ export default function Page() {
     });
   });
 
-  return (
+  return gettingItems ? (
+    <div>
+      <img
+        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWdzZDkxbmEzMHVqNXE4bTl2c3c5NzFzNmFuNTZsZWFtOHlyYm0xZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3owzVXoDN8iP0w3T68/giphy.gif"
+        alt=""
+      />
+    </div>
+  ) : (
     <div className="py-10 px-8">
-      <div className="flex justify-between items-center">
-        {gotUser && publicUserName && (
-          <h1 className="text-2xl text-slate-900 sm:text-4xl">
-            {publicUserName}&apos;s Registry
-          </h1>
-        )}
-      </div>
-
-      {isAdmin && gotUser && <AddItemForm />}
-
-      {/* <Filters /> */}
-
-      {gettingItems && (
-        <div>
-          <img
-            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWdzZDkxbmEzMHVqNXE4bTl2c3c5NzFzNmFuNTZsZWFtOHlyYm0xZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3owzVXoDN8iP0w3T68/giphy.gif"
-            alt=""
-          />
-        </div>
-      )}
-
-      <div className="">
-        {groupedItems.map((groupedItem) => (
-          <div key={groupedItem.id}>
-            <h2 className="mt-8 text-3xl">{groupedItem.category_name}</h2>
-            {groupedItem.items.length == 0 ? (
-              <div className="mt-4">None</div>
-            ) : (
-              groupedItem.items.map((item) => (
-                <ItemRow data={item} isAdmin={isAdmin} key={item.id} />
-              ))
+      {gotUser && (
+        <>
+          <div className="flex justify-between items-center">
+            {publicUserName && (
+              <h1 className="text-2xl text-slate-900 sm:text-4xl">
+                {publicUserName}&apos;s Registry
+              </h1>
             )}
           </div>
-        ))}
+
+          {isAdmin && <AddItemForm />}
+
+          {/* <Filters /> */}
+        </>
+      )}
+
+      <div>
+        {items && items.length > 0 ? (
+          groupedItems.map((groupedItem) => (
+            <div key={groupedItem.id}>
+              <h2 className="mt-8 text-3xl">{groupedItem.category_name}</h2>
+              {groupedItem.items.length == 0 ? (
+                <div className="mt-4">None</div>
+              ) : (
+                groupedItem.items.map((item) => (
+                  <ItemRow data={item} isAdmin={isAdmin} key={item.id} />
+                ))
+              )}
+            </div>
+          ))
+        ) : (
+          <div>Empty</div>
+        )}
       </div>
     </div>
   );
