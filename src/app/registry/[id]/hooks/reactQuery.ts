@@ -18,15 +18,6 @@ import { FormData, GiftTrackerFormData } from '../types';
 
 const supabase = createClientComponentClient();
 
-// Auth users
-
-export const useAuthGetUser = () => {
-  return useQuery('authUser', async () => {
-    const res = await supabase.auth.getUser();
-    return res;
-  });
-};
-
 // Registries
 
 export const useRegistryCount = (registryKey: string) => {
