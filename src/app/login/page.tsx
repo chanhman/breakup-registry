@@ -1,17 +1,19 @@
 'use client';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, redirect } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { Database } from '@/lib/types/supabase';
 import Label from '../components/Label';
 import Input from '../components/Input';
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const [user, setUser] = useState<any>({}); // any, i know.
+
   const supabase = createClientComponentClient<Database>();
 
   const handleSignUp = async () => {
@@ -26,10 +28,16 @@ export default function Login() {
   };
 
   const handleSignIn = async () => {
-    await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    if (error) {
+      console.log('error', error);
+    }
+    if (data.user) {
+      setUser(data);
+    }
     router.refresh();
   };
 
@@ -37,6 +45,12 @@ export default function Login() {
     await supabase.auth.signOut();
     router.refresh();
   };
+
+  useEffect(() => {
+    if (user.user) {
+      redirect('/home');
+    }
+  }, [user]);
 
   return (
     <div className="flex min-h-[840px] flex-col bg-white">
