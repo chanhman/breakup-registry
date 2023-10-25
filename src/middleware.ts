@@ -4,29 +4,30 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
-  console.log(1);
-
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log('Middleware', user);
 
-  // if user is signed in and the current path is / redirect the user to /account
-  if (user && req.nextUrl.pathname === '/') {
-    return NextResponse.redirect(new URL('/account', req.url));
+  // if user is signed in and the current path is / or /login redirect the user to /account
+  if (user && ['/', '/login'].includes(req.nextUrl.pathname)) {
+    return NextResponse.redirect(new URL('/home', req.url));
   }
+
+  // if (!user) {
+  //   return res;
+  // }
 
   // if user is not signed in and the current path is not / redirect the user to /
-  if (!user && req.nextUrl.pathname !== '/') {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
+  // if (!user && req.nextUrl.pathname !== '/') {
+  //   return NextResponse.redirect(new URL('/', req.url));
+  // }
 
   return res;
 }
 
 export const config = {
-  matcher: ['/', '/account'],
+  matcher: ['/', '/account', '/home', '/login'],
 };
