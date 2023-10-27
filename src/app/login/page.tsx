@@ -17,13 +17,19 @@ export default function Login() {
   const supabase = createClientComponentClient<Database>();
 
   const handleSignUp = async () => {
-    await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
+    if (error) {
+      console.log('error', error);
+    }
+    if (data.user) {
+      setUser(data);
+    }
     router.refresh();
   };
 
@@ -41,10 +47,10 @@ export default function Login() {
     router.refresh();
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
-  };
+  // const handleSignOut = async () => {
+  //   await supabase.auth.signOut();
+  //   router.refresh();
+  // };
 
   useEffect(() => {
     if (user.user) {
@@ -77,29 +83,18 @@ export default function Login() {
               />
             </div>
             <div>
-              <button
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={handleSignIn}
-              >
-                Sign in
-              </button>
+              <button onClick={handleSignIn}>Sign in</button>
             </div>
             <div>
-              <button
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={handleSignUp}
-              >
-                Sign up
-              </button>
+              <button onClick={handleSignUp}>Sign up</button>
             </div>
-            <div>
+            {/* <div>
               <button
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={handleSignOut}
               >
                 Sign out
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
